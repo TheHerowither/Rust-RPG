@@ -159,9 +159,12 @@ pub fn item_to_string(item : &Item<'static>) -> String {
         let r : String = format!("\n  Damage: {}\n  Attack speed: {}", item.stats[0], item.stats[1]);
         return_val.push_str(&r);
     }
-    if item.stats[2] != 0.0{
+    else if item.stats[2] != 0.0{
         let r : String = format!("\n  Mining power: {}\n  Mining speed: {}\n", item.stats[2], item.stats[3]);
         return_val.push_str(&r);
+    }
+    else {
+        return_val.push_str(&"\nNo stat bonuses");
     }
     
 

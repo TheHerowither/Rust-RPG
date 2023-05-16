@@ -28,6 +28,7 @@ pub fn main_loop() {
             println!("{}", get_random_item());}
         if cmd == "?" {
             println!("exit - Closes the program");
+            println!("rng_item - prints out a random item");
             //TODO: Print out all of the valid commands, and what they do
         }
     }
