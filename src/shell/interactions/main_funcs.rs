@@ -2,13 +2,13 @@ use std::any::type_name;
 
 //Structs
 //  Item struct, made for saving item information
-pub struct Item {
+pub struct Item<'a> {
     //Name: The name of the item
-    pub name : String,
+    pub name : &'a str,
     //Id: The itemID for easier randomization
     pub id : i32,
     //Descr: Description, the description of the item
-    pub descr : String,
+    pub descr : &'a str,
     //Stats are a list of floats, the indexes represents these stats:
     //1: Damage
     //2: Attack speed
@@ -17,13 +17,13 @@ pub struct Item {
     pub stats : [f64; 4],
 }
 //  Armour struct, made for saving Armour information
-pub struct Armour {
+pub struct Armour<'a> {
     //Name: The name of the item
-    pub name : String,
+    pub name : &'a str,
     //Id: The itemID for easier randomization
     pub id : i32,
     //Descr: Description, the description of the item
-    pub descr : String,
+    pub descr : &'a str,
     //Stats are a list of floats, the indexes represents these stats:
     //1: Strength
     //2: Speed
@@ -32,12 +32,12 @@ pub struct Armour {
 //  Inventory struct, basically just a list, but its possible to add more fields to it
 pub struct Inventory {
     //List for storing an item inventory
-    pub item_inventory_list : Vec<Item>,
+    pub item_inventory_list : Vec<Item<'static>>,
     //Variable to save the equipped item from Item inventory. This is saved as 
     pub equipped_item : usize,
 
     //List for storing armour inventory
-    pub armour_inventory_list : Vec<Armour>,
+    pub armour_inventory_list : Vec<Armour<'static>>,
     //A set size list of equipped armour pieces
     pub equipped_armour : [usize; 4]
 }
@@ -94,10 +94,10 @@ pub struct Enemy {
 
 //Struct impls
 impl Player {
-    pub fn add_to_item_inventory(&mut self, object : Item) {
+    pub fn add_to_item_inventory(&mut self, object : Item<'static>) {
         self.inventory.item_inventory_list.push(object);
     }
-    pub fn add_to_armour_inventory(&mut self, object : Armour) {
+    pub fn add_to_armour_inventory(&mut self, object : Armour<'static>) {
         self.inventory.armour_inventory_list.push(object);
     }
     pub fn change_stat(&mut self, stat : i32, value : f64) {
@@ -151,4 +151,19 @@ pub fn print_armour<'a>(armour : Armour, debug : bool){
         println!("{}: {}", stat_names[i], armour.stats[i]);
         i += 1;
     }
+}
+
+pub fn item_to_string(item : &Item<'static>) -> String {
+    let mut return_val : String = format!("{}\nItem ID: {}\n\n{}\n\nSTATS:", item.name, item.id, item.descr);
+    if item.stats[0] != 0.0{
+        let r : String = format!("\n  Damage: {}\n  Attack speed: {}", item.stats[0], item.stats[1]);
+        return_val.push_str(&r);
+    }
+    if item.stats[2] != 0.0{
+        let r : String = format!("\n  Mining power: {}\n  Mining speed: {}\n", item.stats[2], item.stats[3]);
+        return_val.push_str(&r);
+    }
+    
+
+    return return_val;
 }
