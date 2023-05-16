@@ -43,14 +43,44 @@ pub struct Inventory {
 }
 //  Player struct, made for saving playerstats and make it easier to save into a file
 pub struct Player {
-    //Strength: Influences the players damage
+    //Inventory: The inventory of the player
+    pub inventory : Inventory,
+
+    //HEALTH
+    //Health: Decudes how much health the player has left
+    pub health : i32,
+    //Max Health: Decides the max amount the player can heal to
+    pub max_health : i32,
+
+    //STATS
+    //Strength: Influences the players damage and hit chance
     pub strength : f64,
     //Speed: Influences the players dodging power, and action completion speed
     pub speed : f64,
-
-    //Inventory: The inventory of the player
-    pub inventory : Inventory,
     
+}
+// Enemy type struct, used to define an enemy type
+//  This struct includes the stats, but the health will be decided in the enemy struct
+pub struct EnemyType {
+    //Name: Stores the name of the enemy
+    pub name : String,
+
+    //STATS
+    //Speed: Influences the enemy's attack speed and dodging chance
+    pub speed : f64,
+    //Strength: Influences the enemy's attack damage and hit chance
+    pub strength : f64,
+}
+//Enemy struct, saves information about one particular enemy
+pub struct Enemy {
+    //Type: The EnemyType this enemy inherits from
+    pub self_type : EnemyType,
+
+    //HEALTH
+    //Health: Decides how much health the enemy has left
+    pub health : i32,
+    //Max Health: Decides the max amount the enemy can heal to
+    pub max_health : i32,
 }
 
 
@@ -62,6 +92,26 @@ impl Player {
     }
     pub fn add_to_armour_inventory(&mut self, object : Armour) {
         self.inventory.armour_inventory_list.push(object);
+    }
+    pub fn change_stat(&mut self, stat : i32, value : f64) {
+        if stat == 1 {
+            self.strength = value;}
+        if stat == 2 {
+            self.speed = value;}
+    }
+}
+impl EnemyType {
+    pub fn change_stat(&mut self, stat : i32, value : f64) {
+        if stat == 1 {
+            self.strength = value;}
+        if stat == 2 {
+            self.speed = value;}
+    }
+}
+impl Enemy {
+    pub fn init(&mut self) {
+        self.strength = self.self_type.strength;
+        self.speed = self.self_type.speed;
     }
 }
 
