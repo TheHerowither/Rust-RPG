@@ -12,7 +12,7 @@ pub struct Item {
     //Stats are a list of floats, the indexes represents these stats:
     //1: Damage
     //2: Attack speed
-    //3: Minig power
+    //3: Mining power
     //4: Mining speed
     pub stats : [f64; 4],
 }
@@ -81,6 +81,13 @@ pub struct Enemy {
     pub health : i32,
     //Max Health: Decides the max amount the enemy can heal to
     pub max_health : i32,
+
+    //STATS
+    //THESE ARE OPTIONAL ALL SHALL NOT BE FILLED
+    //Speed: Influences the enemy's attack speed and dodging chance
+    pub speed : Option<f64>,
+    //Strength: Influences the enemy's attack damage and hit chance
+    pub strength : Option<f64>,
 }
 
 
@@ -110,8 +117,8 @@ impl EnemyType {
 }
 impl Enemy {
     pub fn init(&mut self) {
-        self.strength = self.self_type.strength;
-        self.speed = self.self_type.speed;
+        self.strength = Some(self.self_type.strength);
+        self.speed = Some(self.self_type.speed);
     }
 }
 
