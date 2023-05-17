@@ -51,3 +51,6 @@ pub fn debug_loop() {
         }
     }
 }
+pub fn main_loop() {
+    
+}
