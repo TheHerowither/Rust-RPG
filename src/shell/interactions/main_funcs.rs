@@ -15,6 +15,8 @@ pub struct Item<'a> {
     //3: Mining power
     //4: Mining speed
     pub stats : [f64; 4],
+    //Damage type: The type of damage the item deals, set to "" if item has no damage type
+    pub damage_type : &'a str,
 }
 //  Armour struct, made for saving Armour information
 pub struct Armour<'a> {
@@ -24,10 +26,19 @@ pub struct Armour<'a> {
     pub id : i32,
     //Descr: Description, the description of the item
     pub descr : &'a str,
+
+    //Armour: the armour that this armourpiece gives
+    pub armour : f32,
+
+    //STATS
     //Stats are a list of floats, the indexes represents these stats:
     //1: Strength
     //2: Speed
     pub stats : [f64; 2],
+    //Damage resistance: the armourpiece has increased resistance against that type of damage set to "" if none
+    pub damage_resistance : &'a str,
+    //Damage resistance addition: the added armour against the damage resistance type
+    pub damage_resistance_addition : f32,
 }
 //  Inventory struct, basically just a list, but its possible to add more fields to it
 pub struct Inventory {
@@ -165,6 +176,33 @@ pub fn item_to_string(item : &Item<'static>) -> String {
     }
     else {
         return_val.push_str(&"\nNo stat bonuses");
+    }
+
+    if item.damage_type != "" {
+        let r : String = format!("\n  Damage type: {}", item.damage_type);
+        return_val.push_str(&r)
+    }
+    
+
+    return return_val;
+}
+pub fn armour_to_string(item : &Armour<'static>) -> String {
+    let mut return_val : String = format!("{}\nItem ID: {}\n\n{}\n\nSTATS:", item.name, item.id, item.descr);
+    if item.stats[0] != 0.0{
+        let r : String = format!("\n  Strength: {}", item.stats[0]);
+        return_val.push_str(&r);
+    }
+    else if item.stats[1] != 0.0{
+        let r : String = format!("\n  Speed: {}", item.stats[1]);
+        return_val.push_str(&r);
+    }
+    else {
+        return_val.push_str(&"\nNo stat bonuses");
+    }
+
+    if item.damage_resistance != "" {
+        let r : String = format!("\n  Damage resistance: {} - {}", item.damage_resistance, item.damage_resistance_addition);
+        return_val.push_str(&r)
     }
     
 

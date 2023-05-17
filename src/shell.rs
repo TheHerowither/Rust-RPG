@@ -26,9 +26,12 @@ pub fn main_loop() {
             break;}
         if cmd == "rng_item" {
             println!("{}", get_random_item());}
+        if cmd == "rng_armour" {
+            println!("{}", get_random_armour());}
         if cmd == "?" {
             println!("exit - Closes the program");
             println!("rng_item - prints out a random item");
+            println!("rng_armour - prints out a random armour");
             //TODO: Print out all of the valid commands, and what they do
         }
     }
