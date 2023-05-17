@@ -23,8 +23,8 @@ fn input(name : &str) -> String {
 pub fn debug_loop() {
     loop {
         //Get the input from the shell
-        let cmd = input("> ");
-        let split = cmd.split(" ");
+        let cmd: String = input("> ");
+        let split: std::str::Split<&str> = cmd.split(" ");
         let split: Vec<&str> = split.collect();
         //Handle the input:
         if cmd == "exit" {
