@@ -8,4 +8,5 @@ Once you start the program, it will start a shell, enter "?" to see the differen
 This is currently how the program works, for debug purposes. Later this will probably not be possible.
 
 If you want to try the main features, go into the opt.ini file, and set the debug parameter to 0.
+
 If the program closes right on startup, that will mean that there is no loop there.
