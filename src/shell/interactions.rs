@@ -3,8 +3,8 @@ pub mod main_funcs;
 use main_funcs::*;
 use rand::Rng;
 
-const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
-const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
+pub const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
+pub const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
 
 pub fn get_random_item() -> String {
     let mut rng = rand::thread_rng();
@@ -29,4 +29,35 @@ pub fn get_armour_by_id(id : i32) -> &'static Armour<'static>{
     let index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
 
     return &ARMOURS[index];
+}
+pub fn calculate_damage(enemy : Enemy, player : Player) -> [i32; 2] {
+    let player_weapon: &Item = &player.inventory.item_inventory_list[player.inventory.equipped_item];
+    let player_armour: &Armour = &player.inventory.armour_inventory_list[player.inventory.equipped_armour];
+    let player_strength: f64 = player.strength;
+    let player_damage_type: &str = player_weapon.damage_type;
+
+    let enemy_strenght: f64 = enemy.strength;
+    let enemy_weapon: &Item = &enemy.inventory.item_inventory_list[enemy.inventory.equipped_item];
+    let enemy_armour: &Armour = &enemy.inventory.armour_inventory_list[enemy.inventory.equipped_armour];
+    let enemy_damage_type: &str = enemy_weapon.damage_type;
+
+    //Calculations for armour classes
+    let mut player_armour_class = player_armour.armour;
+    if enemy_damage_type == player_armour.damage_resistance {
+        player_armour_class += player_armour.damage_resistance_addition;
+    }
+    let mut enemy_armour_class = enemy_armour.armour;
+    if player_damage_type == enemy_armour.damage_resistance {
+        enemy_armour_class += enemy_armour.damage_resistance_addition;
+    }
+
+    //Calculations for raw damage
+    let player_raw_damage: f64 = player_weapon.stats[0] * player_strength;
+    let enemy_raw_damage: f64 = enemy_strenght * enemy_weapon.stats[0];
+
+    //Calculations for damage
+    let player_damage: f64 = player_raw_damage - enemy_armour_class as f64;
+    let enemy_damage: f64 = enemy_raw_damage - player_armour_class as f64;
+
+    return [player_damage as i32, enemy_damage as i32];
 }

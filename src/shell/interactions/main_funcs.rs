@@ -18,7 +18,7 @@ pub struct Item<'a> {
     //Damage type: The type of damage the item deals, set to "" if item has no damage type
     pub damage_type : &'a str,
 }
-//  Armour struct, made for saving Armour information
+//  Armour struct, made for saving an entire Armour set's information
 pub struct Armour<'a> {
     //Name: The name of the item
     pub name : &'a str,
@@ -50,7 +50,7 @@ pub struct Inventory {
     //List for storing armour inventory
     pub armour_inventory_list : Vec<Armour<'static>>,
     //A set size list of equipped armour pieces
-    pub equipped_armour : [usize; 4]
+    pub equipped_armour : usize
 }
 //  Player struct, made for saving playerstats and make it easier to save into a file
 pub struct Player {
@@ -64,7 +64,7 @@ pub struct Player {
     pub max_health : i32,
 
     //STATS
-    //Strength: Influences the players damage and hit chance
+    //Strength: Damage multiplier
     pub strength : f64,
     //Speed: Influences the players dodging power, and action completion speed
     pub speed : f64,
@@ -79,13 +79,16 @@ pub struct EnemyType {
     //STATS
     //Speed: Influences the enemy's attack speed and dodging chance
     pub speed : f64,
-    //Strength: Influences the enemy's attack damage and hit chance
+    //Strength: Damage multiplier
     pub strength : f64,
 }
 //Enemy struct, saves information about one particular enemy
 pub struct Enemy {
     //Type: The EnemyType this enemy inherits from
     pub self_type : EnemyType,
+
+    //Inventory: stores items held by the enemy
+    pub inventory : Inventory,
 
     //HEALTH
     //Health: Decides how much health the enemy has left
@@ -94,11 +97,11 @@ pub struct Enemy {
     pub max_health : i32,
 
     //STATS
-    //THESE ARE OPTIONAL ALL SHALL NOT BE FILLED
+    //THESE ARE TO BE SET TO 0
     //Speed: Influences the enemy's attack speed and dodging chance
-    pub speed : Option<f64>,
+    pub speed : f64,
     //Strength: Influences the enemy's attack damage and hit chance
-    pub strength : Option<f64>,
+    pub strength : f64,
 
     //Can Drop: A list of item id's of the items this enemy can drop on death
     pub can_drop : Vec<i32>,
@@ -120,6 +123,18 @@ impl Player {
         if stat == 2 {
             self.speed = value;}
     }
+    pub fn damage(&mut self, value : i32) {
+        self.health -= value;
+    }
+    pub fn heal(&mut self, value : i32) {
+        if self.health >= self.max_health - value {
+            self.health += value;
+        }
+        else if self.health > self.max_health {
+            self.health += self.max_health - self.health;
+        }
+        
+    }
 }
 impl EnemyType {
     pub fn change_stat(&mut self, stat : i32, value : f64) {
@@ -131,8 +146,20 @@ impl EnemyType {
 }
 impl Enemy {
     pub fn init(&mut self) {
-        self.strength = Some(self.self_type.strength);
-        self.speed = Some(self.self_type.speed);
+        self.strength = self.self_type.strength;
+        self.speed = self.self_type.speed;
+    }
+    pub fn damage(&mut self, value : i32) {
+        self.health -= value;
+    }
+    pub fn heal(&mut self, value : i32) {
+        if self.health >= self.max_health - value {
+            self.health += value;
+        }
+        else if self.health > self.max_health {
+            self.health += self.max_health - self.health;
+        }
+        
     }
 }
 
