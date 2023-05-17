@@ -20,3 +20,13 @@ pub fn get_random_armour() -> String {
 
     return armour_to_string(item);
 }
+pub fn get_item_by_id(id : i32) -> &'static Item<'static>{
+    let index: usize = ITEMS.iter().position(|r| r.id == id).unwrap();
+
+    return &ITEMS[index];
+}
+pub fn get_armour_by_id(id : i32) -> &'static Armour<'static>{
+    let index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
+
+    return &ARMOURS[index];
+}
