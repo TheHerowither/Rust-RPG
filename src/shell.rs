@@ -20,7 +20,7 @@ fn input(name : &str) -> String {
     return line.trim().to_string();
 }
 
-pub fn main_loop() {
+pub fn debug_loop() {
     loop {
         //Get the input from the shell
         let cmd = input("> ");
