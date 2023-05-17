@@ -7,4 +7,5 @@ I am currently learing rust, and this is one f the projects i think that i will 
 Once you start the program, it will start a shell, enter "?" to see the different commands and how to use them.
 This is currently how the program works, for debug purposes. Later this will probably not be possible.
 
-If you want to try the main features, go into the opt.ini file, and set the debug parameter to 0, if the program closes right on startip, that will mean that there is no loop there.
+If you want to try the main features, go into the opt.ini file, and set the debug parameter to 0.
+If the program closes right on startup, that will mean that there is no loop there.
