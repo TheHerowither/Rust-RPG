@@ -99,6 +99,9 @@ pub struct Enemy {
     pub speed : Option<f64>,
     //Strength: Influences the enemy's attack damage and hit chance
     pub strength : Option<f64>,
+
+    //Can Drop: A list of item id's of the items this enemy can drop on death
+    pub can_drop : Vec<i32>,
 }
 
 
