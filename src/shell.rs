@@ -45,7 +45,8 @@ pub fn main_loop() {
             println!("exit - Closes the program");
             println!("rng_item - prints out a random item");
             println!("rng_armour - prints out a random armour");
-            println!("get_item_by_id id - prints out a item with the specified id");
+            println!("get_item_by_id id - prints out the item with the specified id");
+            println!("get_armour_by_id id - prints out the armour with the specified id");
             //TODO: Print out all of the valid commands, and what they do
         }
     }
