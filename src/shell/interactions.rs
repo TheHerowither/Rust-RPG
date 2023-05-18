@@ -2,11 +2,15 @@ pub mod main_funcs;
 
 use main_funcs::*;
 use rand::Rng;
+use std::panic as panic;
 
 pub const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
 pub const TOTALITEMID : i32 = ITEMS.len() as i32;
 pub const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
 pub const TOTALARMOURSID : i32 = ARMOURS.len() as i32;
+
+const INVALIDITEM: &Item<'static> = &Item{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0,0.0,0.0], damage_type : ""};
+const INVALIDARMOUR: &Armour<'static> = &Armour{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0], damage_resistance : "", armour : 0.0, damage_resistance_addition : 0.0};
 
 pub fn get_random_item() -> String {
     let mut rng = rand::thread_rng();
@@ -23,14 +27,31 @@ pub fn get_random_armour() -> String {
     return armour_to_string(item);
 }
 pub fn get_item_by_id(id : i32) -> &'static Item<'static>{
-    let index: usize = ITEMS.iter().position(|r| r.id == id).unwrap();
-
-    return &ITEMS[index];
+    let result = panic::catch_unwind(|| {
+        let _index: usize = ITEMS.iter().position(|r| r.id == id).unwrap();
+    });
+    if result.is_err() {
+        println!("Item ID: {} is invalid.\nIgnored panick", id);
+        return INVALIDITEM;
+    }
+    else {
+        let _index: usize = ITEMS.iter().position(|r| r.id == id).unwrap();
+        return &ITEMS[_index];
+    }
 }
 pub fn get_armour_by_id(id : i32) -> &'static Armour<'static>{
-    let index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
-
-    return &ARMOURS[index];
+    let result = panic::catch_unwind(|| {
+        let _index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
+    });
+    if result.is_err() {
+        println!("Armour ID: {} is invalid.\nIgnored panick", id);
+        return INVALIDARMOUR;
+    }
+    else {
+        let _index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
+        return &ARMOURS[_index];
+    }
+    
 }
 pub fn calculate_damage(enemy : Enemy, player : Player) -> [i32; 2] {
     let player_weapon: &Item = &player.inventory.item_inventory_list[player.inventory.equipped_item];

@@ -4,7 +4,9 @@ pub mod interactions;
 use interactions::*;
 use interactions::main_funcs::*;
 
+
 use std::{io::Write};
+
 
 use crate::shell::interactions::main_funcs::item_to_string;
 
@@ -26,6 +28,7 @@ pub fn debug_loop() {
         let cmd: String = input("> ");
         let split: std::str::Split<&str> = cmd.split(" ");
         let split: Vec<&str> = split.collect();
+        println!();
         //Handle the input:
         if cmd == "exit" {
             break;}
@@ -34,12 +37,24 @@ pub fn debug_loop() {
         else if cmd == "rng_armour" {
             println!("{}", get_random_armour());}
         else if split[0] == "get_item_by_id" {
-            let r = item_to_string(get_item_by_id(split[1].to_string().parse::<i32>().unwrap()));
-            println!("{}", r);
+            let item: &'static Item = get_item_by_id(split[1].to_string().parse::<i32>().unwrap());
+            if item.name != "Invalid"{
+                let r = item_to_string(item);
+                println!("{}", r)  
+            }
+            else {
+                //println!("Item ID: {} is invalid", split[1]);
+            }
         }
         else if split[0] == "get_armour_by_id" {
-            let r = armour_to_string(get_armour_by_id(split[1].to_string().parse::<i32>().unwrap()));
-            println!("{}", r);
+            let item: &'static Armour = get_armour_by_id(split[1].to_string().parse::<i32>().unwrap());
+            if item.name != "Invalid"{
+                let r = armour_to_string(item);
+                println!("{}", r);
+            }
+            else {
+                //println!("Item ID: {} is invalid", split[1]);
+            }
         }
         else if cmd == "?" {
             //Print out all of the valid commands, and what they do
