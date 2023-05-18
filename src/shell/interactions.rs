@@ -4,10 +4,12 @@ use main_funcs::*;
 use rand::Rng;
 use std::panic as panic;
 
-pub const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
-pub const TOTALITEMID : i32 = ITEMS.len() as i32;
+pub const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, 
+                    Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, 
+                    Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
+pub const TOTALITEMID : i32 = ITEMS.len() as i32 - 1;
 pub const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
-pub const TOTALARMOURSID : i32 = ARMOURS.len() as i32;
+pub const TOTALARMOURSID : i32 = ARMOURS.len() as i32 - 1;
 
 const INVALIDITEM: &Item<'static> = &Item{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0,0.0,0.0], damage_type : ""};
 const INVALIDARMOUR: &Armour<'static> = &Armour{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0], damage_resistance : "", armour : 0.0, damage_resistance_addition : 0.0};
@@ -53,7 +55,7 @@ pub fn get_armour_by_id(id : i32) -> &'static Armour<'static>{
     }
     
 }
-pub fn calculate_damage(enemy : Enemy, player : Player) -> [i32; 2] {
+pub fn calculate_damage(enemy : &Enemy, player : &Player) -> [i32; 2] {
     let player_weapon: &Item = &player.inventory.item_inventory_list[player.inventory.equipped_item];
     let player_armour: &Armour = &player.inventory.armour_inventory_list[player.inventory.equipped_armour];
     let player_strength: f64 = player.strength;
@@ -83,4 +85,21 @@ pub fn calculate_damage(enemy : Enemy, player : Player) -> [i32; 2] {
     let enemy_damage: f64 = enemy_raw_damage - player_armour_class as f64;
 
     return [player_damage as i32, enemy_damage as i32];
+}
+pub fn get_random_item_from_pool(item_pool : ItemPool) -> &'static Item<'static>{
+    let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
+    let index : usize = rng.gen_range(0..item_pool.pool_item_ids.len());
+    let id: i32 = item_pool.pool_item_ids[index];
+
+    return get_item_by_id(id);
+}
+pub fn get_random_armour_from_pool(item_pool : ItemPool) -> &'static Item<'static>{
+    let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
+    let index : usize = rng.gen_range(0..item_pool.pool_armour_ids.len());
+    let id: i32 = item_pool.pool_armour_ids[index];
+
+    return get_item_by_id(id);
+}
+pub fn enemy_death(mut enemy : Enemy) -> &'static Item<'static>{
+    return get_item_by_id(enemy.death());
 }

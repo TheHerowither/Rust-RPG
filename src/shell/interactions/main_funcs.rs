@@ -1,4 +1,5 @@
 use std::any::type_name;
+use rand::Rng;
 
 //Structs
 //  Item struct, made for saving item information
@@ -43,12 +44,12 @@ pub struct Armour<'a> {
 //  Inventory struct, basically just a list, but its possible to add more fields to it
 pub struct Inventory {
     //List for storing an item inventory
-    pub item_inventory_list : Vec<Item<'static>>,
+    pub item_inventory_list : Vec<&'static Item<'static>>,
     //Variable to save the equipped item from Item inventory. This is saved as 
     pub equipped_item : usize,
 
     //List for storing armour inventory
-    pub armour_inventory_list : Vec<Armour<'static>>,
+    pub armour_inventory_list : Vec<&'static Armour<'static>>,
     //A set size list of equipped armour pieces
     pub equipped_armour : usize
 }
@@ -103,18 +104,25 @@ pub struct Enemy {
     //Strength: Influences the enemy's attack damage and hit chance
     pub strength : f64,
 
-    //Can Drop: A list of item id's of the items this enemy can drop on death
-    pub can_drop : Vec<i32>,
+    //Can Drop: A ItemPool that stores the items/armours this enemy can drop on death
+    pub can_drop : ItemPool,
+}
+//Item pool struct, stores a item pool
+pub struct ItemPool {
+    //PoolItemIDs: List of item ID's for items in this pool
+    pub pool_item_ids : Vec<i32>,
+    //PoolArmourIDs: List of armour ID's for items in this pool
+    pub pool_armour_ids : Vec<i32>,
 }
 
 
 
 //Struct impls
 impl Player {
-    pub fn add_to_item_inventory(&mut self, object : Item<'static>) {
+    pub fn add_to_item_inventory(&mut self, object : &'static Item<'static>) {
         self.inventory.item_inventory_list.push(object);
     }
-    pub fn add_to_armour_inventory(&mut self, object : Armour<'static>) {
+    pub fn add_to_armour_inventory(&mut self, object : &'static Armour<'static>) {
         self.inventory.armour_inventory_list.push(object);
     }
     pub fn change_stat(&mut self, stat : i32, value : f64) {
@@ -160,6 +168,14 @@ impl Enemy {
             self.health += self.max_health - self.health;
         }
         
+    }
+    pub fn death(&mut self) -> i32{
+        let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
+        let armour_index : usize = rng.gen_range(0..self.can_drop.pool_armour_ids.len());
+        let item_index : usize = rng.gen_range(0..self.can_drop.pool_item_ids.len());
+
+        let items: [i32; 2] = [self.can_drop.pool_armour_ids[armour_index], self.can_drop.pool_item_ids[item_index]];
+        return items[rng.gen_range(0..1)];
     }
 }
 
