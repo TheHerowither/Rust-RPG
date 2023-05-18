@@ -72,7 +72,7 @@ pub fn debug_loop() {
             println!("get_armour_ids - prints out max number of armour id's");
         }
         else {
-            println!("Invalid command '{}'\nTry writing '?' to see the commands\nRemember: it IS context sensitive", cmd);
+            println!("Invalid command '{}'\nTry writing '?' to see valid commands.\nRemember: it IS context sensitive!", cmd);
         }
         println!();
     }
