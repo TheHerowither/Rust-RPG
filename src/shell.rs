@@ -28,7 +28,7 @@ pub fn debug_loop() {
         let cmd: String = input("> ");
         let split: std::str::Split<&str> = cmd.split(" ");
         let split: Vec<&str> = split.collect();
-        println!();
+        println!("----------------------------------------");
         //Handle the input:
         if cmd == "exit" {
             break;}
@@ -67,7 +67,7 @@ pub fn debug_loop() {
         else {
             println!("Invalid command\nTry writing '?' to see the commands\nRemember: it IS context sensitive");
         }
-        println!();
+        println!("----------------------------------------");
     }
 }
 pub fn main_loop() {
