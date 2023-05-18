@@ -25,10 +25,10 @@ fn input(name : &str) -> String {
 pub fn debug_loop() {
     loop {
         //Get the input from the shell
-        let cmd: String = input("> ");
+        let cmd: String = input("RPG - debug shell> ");
         let split: std::str::Split<&str> = cmd.split(" ");
         let split: Vec<&str> = split.collect();
-        println!("----------------------------------------");
+        println!();
         //Handle the input:
         if cmd == "exit" {
             break;}
@@ -56,6 +56,11 @@ pub fn debug_loop() {
                 //println!("Item ID: {} is invalid", split[1]);
             }
         }
+        else if split[0] == "get_item_ids"{
+            println!("Item ID range: 0 - {}", TOTALITEMID);}
+        else if split[0] == "get_armour_ids"{
+            println!("Armour ID range: 0 - {}", TOTALARMOURSID);}
+        
         else if cmd == "?" {
             //Print out all of the valid commands, and what they do
             println!("exit - Closes the program");
@@ -63,11 +68,13 @@ pub fn debug_loop() {
             println!("rng_armour - prints out a random armour");
             println!("get_item_by_id id - prints out the item with the specified id");
             println!("get_armour_by_id id - prints out the armour with the specified id");
+            println!("get_item_ids - prints out max number of item id's");
+            println!("get_armour_ids - prints out max number of armour id's");
         }
         else {
-            println!("Invalid command\nTry writing '?' to see the commands\nRemember: it IS context sensitive");
+            println!("Invalid command '{}'\nTry writing '?' to see the commands\nRemember: it IS context sensitive", cmd);
         }
-        println!("----------------------------------------");
+        println!();
     }
 }
 pub fn main_loop() {
@@ -84,7 +91,7 @@ pub fn main_loop() {
             println!("exit - Closes the program");
         }
         else {
-            println!("Invalid command\nTry writing '?' to see the commands\nRemember: it IS context sensitive");
+            println!("Invalid command '{}'\nTry writing '?' to see the commands\nRemember: it IS context sensitive", cmd);
         }
         println!();
     }
