@@ -86,19 +86,19 @@ pub fn calculate_damage(enemy : &Enemy, player : &Player) -> [i32; 2] {
 
     return [player_damage as i32, enemy_damage as i32];
 }
-pub fn get_random_item_from_pool(item_pool : ItemPool) -> &'static Item<'static>{
+pub fn get_random_item_from_pool(item_pool : &ItemPool) -> &'static Item<'static>{
     let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
     let index : usize = rng.gen_range(0..item_pool.pool_item_ids.len());
     let id: i32 = item_pool.pool_item_ids[index];
 
     return get_item_by_id(id);
 }
-pub fn get_random_armour_from_pool(item_pool : ItemPool) -> &'static Item<'static>{
+pub fn get_random_armour_from_pool(item_pool : &ItemPool) -> &'static Armour<'static>{
     let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
     let index : usize = rng.gen_range(0..item_pool.pool_armour_ids.len());
     let id: i32 = item_pool.pool_armour_ids[index];
 
-    return get_item_by_id(id);
+    return get_armour_by_id(id);
 }
 pub fn enemy_death(mut enemy : Enemy) -> &'static Item<'static>{
     return get_item_by_id(enemy.death());

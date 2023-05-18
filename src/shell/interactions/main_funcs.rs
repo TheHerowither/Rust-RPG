@@ -233,7 +233,7 @@ pub fn item_to_string(item : &Item<'static>) -> String {
     return return_val;
 }
 pub fn armour_to_string(item : &Armour<'static>) -> String {
-    let mut return_val : String = format!("{}\nItem ID: {}\n\n{}\n\nSTATS:", item.name, item.id, item.descr);
+    let mut return_val : String = format!("{}\nArmour ID: {}\n\n{}\n\nSTATS:", item.name, item.id, item.descr);
     if item.stats[0] != 0.0{
         let r : String = format!("\n  Strength: {}", item.stats[0]);
         return_val.push_str(&r);
