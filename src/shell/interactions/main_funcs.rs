@@ -58,8 +58,12 @@ pub struct Player {
     //Inventory: The inventory of the player
     pub inventory : Inventory,
 
+    //EXTRAS
+    //Money: THe money the player has gathered, currently the only thing possible to get from harvesting
+    pub money : i64,
+
     //HEALTH
-    //Health: Decudes how much health the player has left
+    //Health: Decides how much health the player has left
     pub health : i32,
     //Max Health: Decides the max amount the player can heal to
     pub max_health : i32,
@@ -116,7 +120,6 @@ pub struct ItemPool {
 }
 
 
-
 //Struct impls
 impl Player {
     pub fn add_to_item_inventory(&mut self, object : &'static Item<'static>) {
@@ -140,8 +143,13 @@ impl Player {
         }
         else if self.health > self.max_health {
             self.health += self.max_health - self.health;
-        }
-        
+        }   
+    }
+    pub fn add_money(&mut self, value : i64) {
+        self.money += value;
+    }
+    pub fn remove_money(&mut self, value : i64) {
+        self.money -= value;
     }
 }
 impl EnemyType {

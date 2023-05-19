@@ -4,10 +4,12 @@ use main_funcs::*;
 use rand::Rng;
 use std::panic as panic;
 
+//A const for saving ALL item's that exists in the game
 pub const ITEMS : [Item<'static>; 3] = [Item{name : "Fires edge", id : 0, descr : "A fiery blade, that pierces its foes\nwith fiery slashes", stats : [1.3, 0.2, 0.0, 0.0], damage_type : "Fire"}, 
                     Item{name : "Stonk", id : 1, descr : "A pickaxe that produces STONKS", stats : [0.0, 0.0, 1.0, 3.2], damage_type : ""}, 
                     Item{name : "Herring the red", id : 2, descr : "A red herring", stats : [0.0, 0.0, 0.0, 0.0], damage_type : ""}];
 pub const TOTALITEMID : i32 = ITEMS.len() as i32 - 1;
+//A const for saving ALL Armour's that exists in the game
 pub const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
 pub const TOTALARMOURSID : i32 = ARMOURS.len() as i32 - 1;
 
@@ -102,4 +104,9 @@ pub fn get_random_armour_from_pool(item_pool : &ItemPool) -> &'static Armour<'st
 }
 pub fn enemy_death(mut enemy : Enemy) -> &'static Item<'static>{
     return get_item_by_id(enemy.death());
+}
+pub fn harvest(mut player : Player) {
+    let item: &Item = player.inventory.item_inventory_list[player.inventory.equipped_item];
+
+    player.add_money((item.stats[2] * item.stats[3]) as i64);
 }

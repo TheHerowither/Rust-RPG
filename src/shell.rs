@@ -27,6 +27,7 @@ pub fn debug_loop() {
     let fire_pool : ItemPool = ItemPool { pool_item_ids: vec![0], pool_armour_ids: vec![0] };
     let valid_pools : Vec<&str> = vec![&"fire_pool"];
     loop {
+        let mut rng = rand::thread_rng();
         //Get the input from the shell
         let cmd: String = input("RPG - debug shell> ");
         let split: std::str::Split<&str> = cmd.split(" ");
@@ -64,7 +65,6 @@ pub fn debug_loop() {
         else if split[0] == "get_armour_ids"{
             println!("Armour ID range: 0 - {}", TOTALARMOURSID);}
         else if split[0] == "get_random_item_pool_item" {
-            let mut rng = rand::thread_rng();
             if split[1] == "fire_pool" {
                 let i = &vec![item_to_string(get_random_item_from_pool(&fire_pool)), armour_to_string(get_random_armour_from_pool(&fire_pool))][rng.gen_range(0..2)];
                 println!("{}", i);
@@ -105,6 +105,7 @@ pub fn main_loop() {
             //Print out all of the possible commands and what they do
             println!("exit - Closes the program");
         }
+        
         else {
             println!("Invalid command '{}'\nTry writing '?' to see the commands\nRemember: it IS context sensitive", cmd);
         }
