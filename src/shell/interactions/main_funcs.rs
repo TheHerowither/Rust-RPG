@@ -185,31 +185,6 @@ pub fn type_of<T>(_: T) -> &'static str {
 }
 
 //Funcs
-pub fn print_item<'a>(item : Item, debug : bool){
-    println!("{}", item.name);
-    if debug {println!("Item ID: {}", item.id);}
-    println!("\n{}\n\n", item.descr);
-
-    println!("Stats:");
-    if item.stats[0] != 0.0{println!("Damage: {}\nAttack speed: {}\n", item.stats[0],item.stats[1]);}
-    if item.stats[2] != 0.0{println!("Mining power: {}\nMining speed: {}\n", item.stats[2],item.stats[3]);}
-}
-pub fn print_armour<'a>(armour : Armour, debug : bool){
-    println!("{}", armour.name);
-    if debug {println!("Item ID: {}", armour.id);}
-    println!("\n{}\n\n", armour.descr);
-
-    println!("Stats:");
-    let mut i : usize = 0;
-
-    //Stat name list, a probably temporary list for storing the names of the stats if the "stats" list
-    let stat_names : [&str; 2] = ["Strength", "Speed"];
-    while i < armour.stats.len() {
-        println!("{}: {}", stat_names[i], armour.stats[i]);
-        i += 1;
-    }
-}
-
 pub fn item_to_string(item : &Item<'static>) -> String {
     let mut return_val : String = format!("{}\nItem ID: {}\n\n{}\n\nSTATS:", item.name, item.id, item.descr);
     if item.stats[0] != 0.0{
