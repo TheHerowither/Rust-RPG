@@ -25,7 +25,7 @@ fn input(name : &str) -> String {
 
 pub fn debug_loop() {
     let fire_pool : ItemPool = ItemPool { pool_item_ids: vec![0], pool_armour_ids: vec![0] };
-    let valid_pools : Vec<String> = vec!["fire_pool".to_string()];
+    let valid_pools : Vec<&str> = vec![&"fire_pool"];
     loop {
         //Get the input from the shell
         let cmd: String = input("RPG - debug shell> ");
