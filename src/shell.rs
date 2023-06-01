@@ -27,7 +27,7 @@ pub fn debug_loop() {
     let fire_pool : ItemPool = ItemPool { pool_item_ids: vec![0], pool_armour_ids: vec![0] };
     let valid_pools : Vec<&str> = vec![&"fire_pool"];
     loop {
-        let mut rng = rand::thread_rng();
+        let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
         //Get the input from the shell
         let cmd: String = input("RPG - debug shell> ");
         let split: std::str::Split<&str> = cmd.split(" ");
@@ -43,7 +43,7 @@ pub fn debug_loop() {
         else if split[0] == "get_item_by_id" {
             let item: &'static Item = get_item_by_id(split[1].to_string().parse::<i32>().unwrap());
             if item.name != "Invalid"{
-                let r = item_to_string(item);
+                let r: String = item_to_string(item);
                 println!("{}", r)  
             }
             else {
@@ -53,7 +53,7 @@ pub fn debug_loop() {
         else if split[0] == "get_armour_by_id" {
             let item: &'static Armour = get_armour_by_id(split[1].to_string().parse::<i32>().unwrap());
             if item.name != "Invalid"{
-                let r = armour_to_string(item);
+                let r: String = armour_to_string(item);
                 println!("{}", r);
             }
             else {
@@ -66,7 +66,7 @@ pub fn debug_loop() {
             println!("Armour ID range: 0 - {}", TOTALARMOURSID);}
         else if split[0] == "get_random_item_pool_item" {
             if split[1] == "fire_pool" {
-                let i = &vec![item_to_string(get_random_item_from_pool(&fire_pool)), armour_to_string(get_random_armour_from_pool(&fire_pool))][rng.gen_range(0..2)];
+                let i: &String = &vec![item_to_string(get_random_item_from_pool(&fire_pool)), armour_to_string(get_random_armour_from_pool(&fire_pool))][rng.gen_range(0..2)];
                 println!("{}", i);
             }
         }
