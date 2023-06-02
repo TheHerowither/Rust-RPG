@@ -7,7 +7,7 @@ pub struct Item<'a> {
     //Name: The name of the item
     pub name : &'a str,
     //Id: The itemID for easier randomization
-    pub id : i32,
+    pub id : i16,
     //Descr: Description, the description of the item
     pub descr : &'a str,
     //Stats are a list of floats, the indexes represents these stats:
@@ -24,7 +24,7 @@ pub struct Armour<'a> {
     //Name: The name of the item
     pub name : &'a str,
     //Id: The itemID for easier randomization
-    pub id : i32,
+    pub id : i16,
     //Descr: Description, the description of the item
     pub descr : &'a str,
 
@@ -114,9 +114,11 @@ pub struct Enemy {
 //Item pool struct, stores a item pool
 pub struct ItemPool {
     //PoolItemIDs: List of item ID's for items in this pool
-    pub pool_item_ids : Vec<i32>,
+    pub pool_item_ids : Vec<i16>,
     //PoolArmourIDs: List of armour ID's for items in this pool
-    pub pool_armour_ids : Vec<i32>,
+    pub pool_armour_ids : Vec<i16>,
+    //Pool ID: An id for easier access to the pool
+    pub pool_id : i16,
 }
 
 
@@ -128,7 +130,7 @@ impl Player {
     pub fn add_to_armour_inventory(&mut self, object : &'static Armour<'static>) {
         self.inventory.armour_inventory_list.push(object);
     }
-    pub fn change_stat(&mut self, stat : i32, value : f64) {
+    pub fn change_stat(&mut self, stat : i8, value : f64) {
         if stat == 1 {
             self.strength = value;}
         if stat == 2 {
@@ -177,12 +179,12 @@ impl Enemy {
         }
         
     }
-    pub fn death(&mut self) -> i32{
+    pub fn death(&mut self) -> i16{
         let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
         let armour_index : usize = rng.gen_range(0..self.can_drop.pool_armour_ids.len());
         let item_index : usize = rng.gen_range(0..self.can_drop.pool_item_ids.len());
 
-        let items: [i32; 2] = [self.can_drop.pool_armour_ids[armour_index], self.can_drop.pool_item_ids[item_index]];
+        let items: [i16; 2] = [self.can_drop.pool_armour_ids[armour_index], self.can_drop.pool_item_ids[item_index]];
         return items[rng.gen_range(0..1)];
     }
 }

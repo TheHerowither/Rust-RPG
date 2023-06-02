@@ -13,8 +13,9 @@ pub const TOTALITEMID : i32 = ITEMS.len() as i32 - 1;
 pub const ARMOURS : [Armour<'static>; 1] = [Armour{name : "Firestone Helmet", id : 0, descr : "A helmet, that looks\nto be made of molten rock", armour : 1.0, stats : [0.3, 0.6], damage_resistance : "Fire", damage_resistance_addition : 0.7}];
 pub const TOTALARMOURSID : i32 = ARMOURS.len() as i32 - 1;
 
-const INVALIDITEM: &Item<'static> = &Item{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0,0.0,0.0], damage_type : ""};
-const INVALIDARMOUR: &Armour<'static> = &Armour{name : "Invalid", id : 99999, descr : "", stats : [0.0,0.0], damage_resistance : "", armour : 0.0, damage_resistance_addition : 0.0};
+//Consts to return when a function returns an invalid item/armour
+const INVALIDITEM: &Item<'static> = &Item{name : "Invalid", id : -1, descr : "", stats : [0.0,0.0,0.0,0.0], damage_type : ""};
+const INVALIDARMOUR: &Armour<'static> = &Armour{name : "Invalid", id : -1, descr : "", stats : [0.0,0.0], damage_resistance : "", armour : 0.0, damage_resistance_addition : 0.0};
 
 pub fn get_random_item() -> String {
     let mut rng = rand::thread_rng();
@@ -30,7 +31,7 @@ pub fn get_random_armour() -> String {
 
     return armour_to_string(item);
 }
-pub fn get_item_by_id(id : i32) -> &'static Item<'static>{
+pub fn get_item_by_id(id : i16) -> &'static Item<'static>{
     let result = panic::catch_unwind(|| {
         let _index: usize = ITEMS.iter().position(|r| r.id == id).unwrap();
     });
@@ -43,7 +44,7 @@ pub fn get_item_by_id(id : i32) -> &'static Item<'static>{
         return &ITEMS[_index];
     }
 }
-pub fn get_armour_by_id(id : i32) -> &'static Armour<'static>{
+pub fn get_armour_by_id(id : i16) -> &'static Armour<'static>{
     let result = panic::catch_unwind(|| {
         let _index: usize = ARMOURS.iter().position(|r| r.id == id).unwrap();
     });
@@ -91,14 +92,14 @@ pub fn calculate_damage(enemy : &Enemy, player : &Player) -> [i32; 2] {
 pub fn get_random_item_from_pool(item_pool : &ItemPool) -> &'static Item<'static>{
     let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
     let index : usize = rng.gen_range(0..item_pool.pool_item_ids.len());
-    let id: i32 = item_pool.pool_item_ids[index];
+    let id: i16 = item_pool.pool_item_ids[index];
 
     return get_item_by_id(id);
 }
 pub fn get_random_armour_from_pool(item_pool : &ItemPool) -> &'static Armour<'static>{
     let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
     let index : usize = rng.gen_range(0..item_pool.pool_armour_ids.len());
-    let id: i32 = item_pool.pool_armour_ids[index];
+    let id: i16 = item_pool.pool_armour_ids[index];
 
     return get_armour_by_id(id);
 }

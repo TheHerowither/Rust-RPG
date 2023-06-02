@@ -5,7 +5,7 @@ use configparser::ini::*;
 
 fn main() {
     let mut ini = Ini::new();
-    let _map = ini.load("src/opt.ini");
+    let _map = ini.load("opt.ini");
     let debug: String = ini.get("SETTINGS", "DEBUG").unwrap();
     let debug_bool : i16 = debug.parse::<i16>().unwrap();
     
